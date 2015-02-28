@@ -2,13 +2,18 @@ package com.kieronwiltshire.vone.main;
 
 import com.kieronwiltshire.vone.Vone;
 import com.kieronwiltshire.vone.activation.exceptions.VoneValidationException;
-import com.kieronwiltshire.vone.arena.Arena;
-import com.kieronwiltshire.vone.arena.Session;
-import com.kieronwiltshire.vone.arena.exceptions.IncompatibleArenaSessionException;
+import com.kieronwiltshire.vone.main.events.SessionStartEvent;
+import com.kieronwiltshire.vone.main.exceptions.IncompatibleArenaSessionException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,7 @@ import java.util.Map;
  *  Vone is a 1v1, 2v2, 3v3 and Free For All (FFA) modification/plugin/extension
  *  built on top of the Bukkit and Spigot API.
  */
-public class Game implements Runnable {
+public class Game implements Runnable, Listener {
 
     // Class variables
     private static Game instance;
@@ -43,13 +48,31 @@ public class Game implements Runnable {
     }
 
     // Instance variables
+    private List<Profile> profiles;
     private HashMap<Arena, Session> sessions;
 
     /**
      * This method constructs the singleton instance
      */
     private Game() {
+        this.profiles = new ArrayList<Profile>();
         this.sessions = new HashMap<Arena, Session>();
+    }
+
+    /**
+     * Get the profile of a Player
+     *
+     * @param player Player object
+     * @return Profile object
+     */
+    @Nullable
+    public Profile getProfile(Player player) {
+        for (Profile profile : this.profiles) {
+            if (profile.getPlayer() == player) {
+                return profile;
+            }
+        }
+        return null;
     }
 
     /**
@@ -97,6 +120,7 @@ public class Game implements Runnable {
      * @return Arena object
      * @throws NullPointerException If the session isn't active
      */
+    @Nullable
     public Arena getArena(Session session) throws NullPointerException {
         if (this.sessions.containsValue(session)) {
             for (Map.Entry<Arena, Session> k : this.sessions.entrySet()) {
@@ -134,6 +158,7 @@ public class Game implements Runnable {
         if (session != null) {
             try {
                 session.init();
+                Bukkit.getPluginManager().callEvent(new SessionStartEvent(session));
                 Bukkit.getPluginManager().registerEvents(session, Vone.getInstance());
             } catch (IncompatibleArenaSessionException e) {
                 if (Vone.getEnvironment().getStatus() > 0) {
@@ -183,6 +208,7 @@ public class Game implements Runnable {
      * @return Session array
      * @throws NullPointerException If there are no active sessions
      */
+    @Nullable
     public Session[] getSessions() throws NullPointerException {
         List<Session> sessions = new ArrayList<Session>();
         for (Session session : this.sessions.values()) {
@@ -229,6 +255,20 @@ public class Game implements Runnable {
                     session.run();
                 }
             }
+        }
+    }
+
+    @EventHandler
+    private void onJoin(PlayerJoinEvent event) {
+        if (this.getProfile(event.getPlayer()) == null) {
+            this.profiles.add(new Profile(event.getPlayer()));
+        }
+    }
+
+    @EventHandler
+    private void onQuit(PlayerQuitEvent event) {
+        if (this.getProfile(event.getPlayer()) != null) {
+            this.profiles.remove(this.getProfile(event.getPlayer()));
         }
     }
 

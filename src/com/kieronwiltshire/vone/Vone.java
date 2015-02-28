@@ -1,7 +1,7 @@
 package com.kieronwiltshire.vone;
 
 import com.kieronwiltshire.vone.activation.Validator;
-import com.kieronwiltshire.vone.configuration.ConfigurationFile;
+import com.kieronwiltshire.vone.utilities.ConfigurationFile;
 import com.kieronwiltshire.vone.main.Game;
 import com.kieronwiltshire.vone.utilities.Environment;
 import org.bukkit.Bukkit;
@@ -83,6 +83,7 @@ public class Vone extends JavaPlugin implements Listener {
      * This method is called once all the validation checks are complete
      */
     private void init() {
+        this.getServer().getPluginManager().registerEvents(Game.getInstance(), this);
         this.getServer().getScheduler().runTaskTimerAsynchronously(this, Game.getInstance(), 0L, 20L);
     }
 
