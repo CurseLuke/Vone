@@ -13,130 +13,88 @@ import org.bukkit.Location;
  *  Vone is a 1v1, 2v2, 3v3 and Free For All (FFA) modification/plugin/extension
  *  built on top of the Bukkit and Spigot API.
  */
-public abstract class Arena {
-
-    // Instance variables
-    private String name;
-    private String version;
-    private String[] authors;
-    private String[] description;
-    private String download;
-    private Location spawn;
-
-    /**
-     * Arena constructor
-     *
-     * @param name        The name of the arena
-     * @param version     The version of the arena
-     * @param authors     The authors of the arena
-     * @param description The description of the arena
-     * @param download    The download link for the arena
-     * @param spawn       The spawn location of the arena
-     */
-    protected Arena(String name, String version, String[] authors, String[] description, String download, Location spawn) {
-        this.name = name;
-        this.version = version;
-        this.authors = authors;
-        this.description = description;
-        this.download = download;
-        this.spawn = spawn;
-    }
+public interface Arena {
 
     /**
      * Get the name of the arena
      *
      * @return String value
      */
-    public String getName() {
-        return this.name;
-    }
+    public String getName();
 
     /**
      * Set the version of the arena
      *
      * @param version String value
      */
-    public void setVersion(String version) {
-        this.version = version;
-    }
+    public void setVersion(String version);
 
     /**
      * Get the version of the arena
      *
      * @return String value
      */
-    public String getVersion() {
-        return this.version;
-    }
+    public String getVersion();
 
     /**
      * Set the authors of the arena
      *
      * @param authors String array
      */
-    public void setAuthors(String... authors) {
-        this.authors = authors;
-    }
+    public void setAuthors(String... authors);
 
     /**
      * Get the authors of the arena
      *
      * @return String array
      */
-    public String[] getAuthors() {
-        return this.authors;
-    }
+    public String[] getAuthors();
 
     /**
      * Set the description for the arena
      *
      * @param description String array
      */
-    public void setDescription(String... description) {
-        this.description = description;
-    }
+    public void setDescription(String... description);
 
     /**
      * Get the description of the arena
      *
      * @return String array
      */
-    public String[] getDescription() {
-        return this.description;
-    }
+    public String[] getDescription();
 
     /**
      * Set the download link for the arena
      *
      * @param download String value
      */
-    public void setDownload(String download) {
-        this.download = download;
-    }
+    public void setDownload(String download);
 
     /**
      * Get the download link for the arena
      *
      * @return String value
      */
-    public String getDownload() {
-        return this.download;
-    }
+    public String getDownload();
 
     /**
      * Set the spawn location for the arena
      *
      * @param spawn Location object
      */
-    public void setSpawnLocation(Location spawn) { this.spawn = spawn; }
+    public void setSpawnLocation(Location spawn);
 
     /**
      * Get the spawn location for the arena
      *
      * @return Location object
      */
-    public Location getSpawnLocation() {
-        return this.spawn;
-    }
+    public Location getSpawnLocation();
+
+    /**
+     * Save the Arena information to flat file
+     */
+    public void save();
 
 }

@@ -1,6 +1,6 @@
 package com.kieronwiltshire.vone.main.arenas;
 
-import com.kieronwiltshire.vone.main.Arena;
+import com.kieronwiltshire.vone.main.BasicArena;
 import org.bukkit.Location;
 
 /**
@@ -14,7 +14,7 @@ import org.bukkit.Location;
  *  Vone is a 1v1, 2v2, 3v3 and Free For All (FFA) modification/plugin/extension
  *  built on top of the Bukkit and Spigot API.
  */
-public class CageArena extends Arena {
+public class CageArena extends BasicArena {
 
     // Instance variables
     private Location attackerSpawn;
@@ -72,6 +72,13 @@ public class CageArena extends Arena {
      */
     public Location getDefenderSpawn() {
         return this.defenderSpawn;
+    }
+
+    @Override
+    public void save() {
+        super.save();
+
+        // TODO save to config
     }
 
 }
