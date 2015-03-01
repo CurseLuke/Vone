@@ -16,6 +16,13 @@ import org.bukkit.Location;
 public interface Arena {
 
     /**
+     * Set the name of the arena
+     *
+     * @param name The new name of the arena
+     */
+    public void setName(String name);
+
+    /**
      * Get the name of the arena
      *
      * @return String value
@@ -96,5 +103,10 @@ public interface Arena {
      * Save the Arena information to flat file
      */
     public void save();
+
+    /**
+     * Delete the Arena flat file if one exists
+     */
+    public void delete();
 
 }

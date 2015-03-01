@@ -14,9 +14,11 @@ import org.bukkit.Location;
  *  Vone is a 1v1, 2v2, 3v3 and Free For All (FFA) modification/plugin/extension
  *  built on top of the Bukkit and Spigot API.
  */
-public abstract class BasicArena implements Arena {
+public class BasicArena implements Arena {
 
     // Instance variables
+    private String file;
+
     private String name;
     private String version;
     private String[] authors;
@@ -35,12 +37,19 @@ public abstract class BasicArena implements Arena {
      * @param spawn       The spawn location of the arena
      */
     protected BasicArena(String name, String version, String[] authors, String[] description, String download, Location spawn) {
+        this.file = name;
+
         this.name = name;
         this.version = version;
         this.authors = authors;
         this.description = description;
         this.download = download;
         this.spawn = spawn;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -99,6 +108,11 @@ public abstract class BasicArena implements Arena {
     @Override
     public void save() {
         // TODO save to config
+    }
+
+    @Override
+    public void delete() {
+        // TODO delete config
     }
 
 }
