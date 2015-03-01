@@ -119,10 +119,9 @@ public class Game implements Runnable, Listener {
      *
      * @param session Session object
      * @return Arena object
-     * @throws NullPointerException If the session isn't active
      */
     @Nullable
-    public Arena getArena(Session session) throws NullPointerException {
+    public Arena getArena(Session session) {
         if (this.sessions.containsValue(session)) {
             for (Map.Entry<Arena, Session> k : this.sessions.entrySet()) {
                 if (k.getValue() == session)
@@ -208,10 +207,9 @@ public class Game implements Runnable, Listener {
      * Get all of the sessions currently active
      *
      * @return Session array
-     * @throws NullPointerException If there are no active sessions
      */
     @Nullable
-    public Session[] getSessions() throws NullPointerException {
+    public Session[] getSessions() {
         List<Session> sessions = new ArrayList<Session>();
         for (Session session : this.sessions.values()) {
             if (session != null) {
@@ -230,9 +228,9 @@ public class Game implements Runnable, Listener {
      *
      * @param active Get only the active arenas
      * @return Arena array
-     * @throws NullPointerException If there are no active arenas
      */
-    public Arena[] getArenas(boolean active) throws NullPointerException {
+    @Nullable
+    public Arena[] getArenas(boolean active) {
         if (this.sessions.isEmpty()) {
             return null;
         } else {
