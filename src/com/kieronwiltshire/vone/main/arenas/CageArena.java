@@ -1,6 +1,5 @@
 package com.kieronwiltshire.vone.main.arenas;
 
-import com.kieronwiltshire.vone.main.BasicArena;
 import org.bukkit.Location;
 
 /**
