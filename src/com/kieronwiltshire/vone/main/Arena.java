@@ -109,4 +109,9 @@ public interface Arena {
      */
     public void delete();
 
+    /**
+     * Reload the Arena taking the information from a flat file
+     */
+    public void reload();
+
 }

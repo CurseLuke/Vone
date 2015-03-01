@@ -80,4 +80,11 @@ public class CageArena extends BasicArena {
         // TODO save to config
     }
 
+    @Override
+    public void reload() {
+        super.reload();
+
+        // TODO reload config
+    }
+
 }

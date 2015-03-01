@@ -1,7 +1,11 @@
 package com.kieronwiltshire.vone.main.arenas;
 
+import com.kieronwiltshire.vone.Vone;
 import com.kieronwiltshire.vone.main.Arena;
+import com.kieronwiltshire.vone.utilities.ConfigurationFile;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 /**
  * @name Vone
@@ -14,7 +18,7 @@ import org.bukkit.Location;
  *  Vone is a 1v1, 2v2, 3v3 and Free For All (FFA) modification/plugin/extension
  *  built on top of the Bukkit and Spigot API.
  */
-public class BasicArena implements Arena {
+public class BasicArena extends ConfigurationFile implements Arena {
 
     // Instance variables
     private String file;
@@ -37,7 +41,11 @@ public class BasicArena implements Arena {
      * @param spawn       The spawn location of the arena
      */
     protected BasicArena(String name, String version, String[] authors, String[] description, String download, Location spawn) {
-        this.file = name.replace(" ", "");
+        super(Vone.getInstance(), Vone.getInstance().getArenaFolder(), name.replace(" ", "").toLowerCase() + ".arena");
+
+        this.file = name.replace(" ", "").toLowerCase() + ".arena";
+
+        this.reload();
 
         this.name = name;
         this.version = version;
@@ -107,12 +115,58 @@ public class BasicArena implements Arena {
 
     @Override
     public void save() {
-        // TODO save to config
+        if (!super.doesFileExist()) {
+            super.createFile();
+        }
+
+        super.getConfig().set("properties.name", this.name);
+        super.getConfig().set("properties.version", this.version);
+        super.getConfig().set("properties.authors", this.authors);
+        super.getConfig().set("properties.description", this.description);
+        super.getConfig().set("properties.download", this.download);
+
+        super.getConfig().set("properties.spawn.x", this.spawn.getX());
+        super.getConfig().set("properties.spawn.y", this.spawn.getY());
+        super.getConfig().set("properties.spawn.z", this.spawn.getZ());
+        super.getConfig().set("properties.spawn.yaw", this.spawn.getYaw());
+        super.getConfig().set("properties.spawn.pitch", this.spawn.getPitch());
+        super.getConfig().set("properties.spawn.world", this.spawn.getWorld().getName());
+
+        super.save();
     }
 
     @Override
     public void delete() {
-        // TODO delete config
+        if (super.doesFileExist()) {
+            super.deleteFile();
+        }
+    }
+
+    @Override
+    public void reload() {
+        if (super.doesFileExist()) {
+            this.name = super.getConfig().getString("properties.name");
+            this.version = super.getConfig().getString("properties.version");
+            this.authors = super.getConfig().getStringList("properties.authors").toArray(new String[super.getConfig().getStringList("properties.authors").size()]);
+            this.description = super.getConfig().getStringList("properties.description").toArray(new String[super.getConfig().getStringList("properties.description").size()]);
+            this.download = super.getConfig().getString("properties.download");
+
+            double x = super.getConfig().getDouble("properties.spawn.x");
+            double y = super.getConfig().getDouble("properties.spawn.y");
+            double z = super.getConfig().getDouble("properties.spawn.z");
+            float yaw = super.getConfig().getInt("properties.spawn.yaw");
+            float pitch = super.getConfig().getInt("properties.spawn.pitch");
+            String worldName = super.getConfig().getString("properties.spawn.world");
+
+            World world;
+            if (Bukkit.getWorld(worldName) != null) {
+                world = Bukkit.getWorld(worldName);
+            } else {
+                throw new NullPointerException("Unable to reload the `" + this.name + "` arena. The world was not found.");
+            }
+
+            this.spawn = new Location(world, x, y, z, yaw, pitch);
+        }
     }
 
 }
