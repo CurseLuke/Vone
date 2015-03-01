@@ -2,6 +2,7 @@ package com.kieronwiltshire.vone.main;
 
 import com.kieronwiltshire.vone.Vone;
 import com.kieronwiltshire.vone.activation.exceptions.VoneValidationException;
+import com.kieronwiltshire.vone.main.events.SessionEndEvent;
 import com.kieronwiltshire.vone.main.events.SessionStartEvent;
 import com.kieronwiltshire.vone.main.exceptions.IncompatibleArenaSessionException;
 import org.bukkit.Bukkit;
@@ -149,6 +150,7 @@ public class Game implements Runnable, Listener {
         }
 
         if (this.sessions.get(arena) != null) {
+            Bukkit.getPluginManager().callEvent(new SessionEndEvent(this.sessions.get(arena)));
             HandlerList.unregisterAll(this.sessions.get(arena));
         }
 

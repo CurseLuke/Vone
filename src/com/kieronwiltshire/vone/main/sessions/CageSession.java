@@ -1,12 +1,10 @@
 package com.kieronwiltshire.vone.main.sessions;
 
+import com.kieronwiltshire.vone.main.Game;
+import com.kieronwiltshire.vone.main.Profile;
 import com.kieronwiltshire.vone.main.Session;
 import com.kieronwiltshire.vone.main.arenas.CageArena;
-import com.kieronwiltshire.vone.main.events.SessionEndEvent;
 import com.kieronwiltshire.vone.main.exceptions.IncompatibleArenaSessionException;
-import com.kieronwiltshire.vone.main.Profile;
-import com.kieronwiltshire.vone.main.Game;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -274,7 +272,6 @@ public class CageSession implements Session {
     @Override
     public void destroy() {
         Game.getInstance().setSession(this.arena, null);
-        Bukkit.getPluginManager().callEvent(new SessionEndEvent(this));
     }
 
     @EventHandler
