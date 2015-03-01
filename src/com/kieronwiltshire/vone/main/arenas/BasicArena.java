@@ -37,7 +37,7 @@ public class BasicArena implements Arena {
      * @param spawn       The spawn location of the arena
      */
     protected BasicArena(String name, String version, String[] authors, String[] description, String download, Location spawn) {
-        this.file = name;
+        this.file = name.replace(" ", "");
 
         this.name = name;
         this.version = version;
